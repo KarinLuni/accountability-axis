@@ -12,8 +12,7 @@ The browser companion is maintained separately: [Alpha-Gate Lab](https://github.
 This is an independent companion specification for the accountability axis (α). It uses the public κ vocabulary and reference ladder of Mayur Agnihotri’s [aisvs-c9-action-class-conformance](https://github.com/Mayur021/aisvs-c9-action-class-conformance) (v1.2.0) to keep the vector inputs self-contained. It does not alter that model’s κ classification; it specifies the independent question of whether an agent may be the accountable subject of an action.
 
 ## Acknowledgements
-
-This work benefited from the public technical discussion with Mayur Agnihotri in [OWASP/AISVS#1154](https://github.com/OWASP/AISVS/issues/1154) and from his recommendation to publish a verifiable independent procedure before proposing a later AISVS change. His public κ reference model is cited here under its Apache-2.0 licence. This acknowledgement does not imply endorsement.
+This work benefited from a professional technical discussion with Mayur Agnihotri regarding OWASP/AISVS#1154 and from his recommendation to publish a verifiable independent procedure before proposing a later AISVS change.
 
 ## Layout
 
