@@ -1,0 +1,1110 @@
+{
+  "prompt_version": "1610_17_12",
+  "spec_commit": "sha256:847573b5b9b38e1a34ba19cdce8aabd3ca381512026ff4509f6cfcd25d1aa31e",
+  "corpus_version": "alpha-axis/0.1; base_vectors_sha256:51c32a3a08071a0c939a561288b45fdf19c39d7ad1d77b69212ff10fb99a6232; base_cases:95; additions:N-01…N-19",
+  "generated": "1610_17_18",
+  "suite": "accountability-axis additional vectors: uncovered SPEC table rows and isolated accountable-party defects",
+  "spec": "alpha-axis/0.1",
+  "license": "Apache-2.0",
+  "properties_covered": [
+    "ALPHA-P5",
+    "ALPHA-P7",
+    "ALPHA-P9"
+  ],
+  "notes": [
+    "These additions are kept outside vectors/ so the accepted 95-case corpus and its hash remain unchanged.",
+    "Every N-vector uses the native Lab vector shape: id, title, properties, input, expect and failure_condition. oracle_basis and citation are traceability extensions ignored by the Lab loader.",
+    "Each expected result was read directly from the cited SPEC table row or aggregation rule before the Lab engine was run.",
+    "N-13 through N-19 start from a complete proper record and vary one target field only."
+  ],
+  "vectors": [
+    {
+      "id": "N-01",
+      "title": "Missing party.type is unestablished",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 4",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-02",
+      "title": "Unknown party.type is unestablished",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 4",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "contractor",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-03",
+      "title": "No establishment record is unestablished",
+      "properties": [
+        "ALPHA-P5",
+        "ALPHA-P9"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.1 E5 row 1",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expect": {
+        "establishment": "UNESTABLISHED",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-04",
+      "title": "A first-read timestamp without an offset is unestablished",
+      "properties": [
+        "ALPHA-P5",
+        "ALPHA-P9"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.1 E5 row 8",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ],
+          "establishment": {
+            "establisher": {
+              "kind": "workflow_engine",
+              "control": "external",
+              "id": "wf://example/triage@1"
+            },
+            "established_at": "2026-10-14T09:00:00Z",
+            "first_untrusted_read_at": "2026-10-14T09:01:00"
+          }
+        }
+      },
+      "expect": {
+        "establishment": "UNESTABLISHED",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-05",
+      "title": "Equal establishment and first-read timestamps are unestablished",
+      "properties": [
+        "ALPHA-P5",
+        "ALPHA-P9"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.1 E5 row 10",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ],
+          "establishment": {
+            "establisher": {
+              "kind": "workflow_engine",
+              "control": "external",
+              "id": "wf://example/triage@1"
+            },
+            "established_at": "2026-10-14T09:00:00Z",
+            "first_untrusted_read_at": "2026-10-14T09:00:00Z"
+          }
+        }
+      },
+      "expect": {
+        "establishment": "UNESTABLISHED",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-06",
+      "title": "Equal instants in different offsets are unestablished",
+      "properties": [
+        "ALPHA-P5",
+        "ALPHA-P9"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.1 E5 row 10",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ],
+          "establishment": {
+            "establisher": {
+              "kind": "workflow_engine",
+              "control": "external",
+              "id": "wf://example/triage@1"
+            },
+            "established_at": "2026-10-14T10:00:00+03:00",
+            "first_untrusted_read_at": "2026-10-14T07:00:00Z"
+          }
+        }
+      },
+      "expect": {
+        "establishment": "UNESTABLISHED",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-07",
+      "title": "An establishment timestamp without an offset is unestablished",
+      "properties": [
+        "ALPHA-P5",
+        "ALPHA-P9"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.1 E5 row 5",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ],
+          "establishment": {
+            "establisher": {
+              "kind": "workflow_engine",
+              "control": "external",
+              "id": "wf://example/triage@1"
+            },
+            "established_at": "2026-10-14T09:00:00",
+            "first_untrusted_read_at": "2026-10-14T09:01:00Z"
+          }
+        }
+      },
+      "expect": {
+        "establishment": "UNESTABLISHED",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-08",
+      "title": "Earlier instant in a positive offset passes",
+      "properties": [
+        "ALPHA-P5"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.1 E5 row 11",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ],
+          "establishment": {
+            "establisher": {
+              "kind": "workflow_engine",
+              "control": "external",
+              "id": "wf://example/triage@1"
+            },
+            "established_at": "2026-10-14T10:00:00+03:00",
+            "first_untrusted_read_at": "2026-10-14T08:00:00Z"
+          }
+        }
+      },
+      "expect": {
+        "establishment": "PASS",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "proceed"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule.",
+      "notes": [
+        "The timestamps compare as instants: 10:00+03:00 is 07:00Z, before 08:00Z."
+      ]
+    },
+    {
+      "id": "N-09",
+      "title": "Missing new approval on external re-establishment is unestablished",
+      "properties": [
+        "ALPHA-P5",
+        "ALPHA-P9"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §5.4 X2",
+      "input": {
+        "kind": "chain",
+        "chain": {
+          "id": "chain-n-vector",
+          "steps": [
+            {
+              "id": "read_ticket",
+              "declared_effect": "read_only",
+              "consequence": "LOW",
+              "alpha": {
+                "value": "delegable",
+                "source": {
+                  "kind": "registry",
+                  "control": "external",
+                  "id": "reg://tools/read_ticket@1"
+                }
+              }
+            }
+          ],
+          "establishment": {
+            "establisher": {
+              "kind": "workflow_engine",
+              "control": "external",
+              "id": "wf://example/triage@1"
+            },
+            "established_at": "2026-10-14T16:30:00Z",
+            "first_untrusted_read_at": "2026-10-14T16:31:00Z"
+          },
+          "extensions": [
+            {
+              "attempted_steps": [
+                {
+                  "id": "send_payment",
+                  "declared_effect": "externally_recoverable",
+                  "consequence": "LOW",
+                  "alpha": {
+                    "value": "human_only",
+                    "source": {
+                      "kind": "registry",
+                      "control": "external",
+                      "id": "reg://tools/send_payment@5"
+                    }
+                  }
+                }
+              ],
+              "re_establishment": {
+                "establisher": {
+                  "kind": "workflow_engine",
+                  "control": "external",
+                  "id": "wf://example/payments@1"
+                },
+                "established_at": "2026-10-14T16:32:00Z"
+              }
+            }
+          ]
+        }
+      },
+      "expect": {
+        "establishment": "PASS",
+        "fold_alpha": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "accountability_required": false,
+        "gate": "proceed",
+        "extensions": [
+          {
+            "attempt_outcome": "block",
+            "re_establishment": "UNESTABLISHED",
+            "cumulative_alpha": "delegable",
+            "gate": "block"
+          }
+        ]
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule.",
+      "notes": [
+        "This tests X2’s explicit absent-new_approval_obtained condition only; it does not resolve the separate E4 completeness question."
+      ]
+    },
+    {
+      "id": "N-10",
+      "title": "A PASS record and an unestablished record aggregate to PASS",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 aggregation rule after the table: any PASS gives PASS when no record FAILs",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          },
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": false
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "PASS",
+        "gate": "proceed"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-11",
+      "title": "A PASS record and a FAIL record aggregate to FAIL",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 aggregation rule after the table: any FAIL gives FAIL",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          },
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "agent",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "FAIL",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-12",
+      "title": "Two unestablished records aggregate to UNESTABLISHED",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 aggregation rule after the table: otherwise UNESTABLISHED",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": false
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          },
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": false,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-13",
+      "title": "Unresolvable identity with performer evidenced",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": false
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-14",
+      "title": "Unacknowledged party with performer evidenced",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": false,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-15",
+      "title": "Missing capacity with performer evidenced",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-16",
+      "title": "Binding not evidenced",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-17",
+      "title": "Single-use nonce not evidenced",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-18",
+      "title": "Performer not evidenced",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "acknowledged_as_party",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    },
+    {
+      "id": "N-19",
+      "title": "Party basis other than acknowledged_as_party is unestablished",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "oracle_basis": "spec",
+      "citation": "SPEC.md §6.3 row 9",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        },
+        "obligation_records": [
+          {
+            "for_action": "sign_nda",
+            "record_control": "external",
+            "party": {
+              "type": "natural_person",
+              "id": "idp://example.org/users/person-01",
+              "resolvable": true
+            },
+            "on_behalf_of": "Example Organisation",
+            "capacity": "signatory",
+            "basis": "implied",
+            "acknowledged": true,
+            "bound_to_action": true,
+            "nonce_single_use": true,
+            "performer": {
+              "kind": "party",
+              "id": "idp://example.org/users/person-01"
+            }
+          }
+        ]
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "alpha_trust": "PASS",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true,
+        "accountability_result": "UNESTABLISHED",
+        "gate": "block"
+      },
+      "failure_condition": "Any result different from the cited SPEC table row or rule."
+    }
+  ]
+}
