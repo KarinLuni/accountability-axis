@@ -1,0 +1,479 @@
+{
+  "suite": "accountability-axis test vectors: the obligation record names a human as the party, not as the approver",
+  "spec": "alpha-axis/0.1",
+  "license": "Apache-2.0",
+  "properties_covered": [
+    "ALPHA-P7"
+  ],
+  "notes": [
+    "A human_only action proceeds only when the accountable-party check is PASS.",
+    "PASS requires positive evidence: an obligation record outside agent control, naming one identified natural person as the party in a stated capacity, acknowledged by that person as party (not as approver), bound to the action's canonical parameters with a single-use nonce.",
+    "FAIL is positive evidence of a wrong party or a broken binding. UNESTABLISHED is absence of sufficient evidence. Both take the closed path at the gate.",
+    "All vectors in this file share the same action: sign_nda, recoverable_local, LOW, alpha=human_only from an external registry."
+  ],
+  "vectors": [
+    {
+      "id": "P7-obligation-record",
+      "title": "Accountable-party check over variations of the obligation record",
+      "properties": [
+        "ALPHA-P7"
+      ],
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "sign_nda",
+          "declared_effect": "recoverable_local",
+          "consequence": "LOW",
+          "alpha": {
+            "value": "human_only",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/sign_nda@2"
+            }
+          }
+        }
+      },
+      "expect": {
+        "alpha_effective": "human_only",
+        "oversight_alpha": "HUMAN_OWNS",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": true
+      },
+      "cases": [
+        {
+          "name": "01-proper-record",
+          "notes": "The human is the signatory of record and executed the signature herself; the agent prepared the document, which is a different action type. The organisation is recorded on_behalf_of, in addition to, not instead of, the natural person.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "on_behalf_of": "Example GmbH",
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true,
+                "performer": {
+                  "kind": "party",
+                  "id": "idp://example.org/users/e.vogel"
+                }
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "PASS",
+            "gate": "proceed"
+          }
+        },
+        {
+          "name": "02-approval-only-no-record",
+          "notes": "A human approved execution (AISVS 9.2.1). Nobody is recorded as the party. The approval is recorded under ignored_for_alpha and the gate stays closed.",
+          "input": {
+            "runtime_inputs": [
+              {
+                "kind": "approval",
+                "by": "idp://example.org/users/e.vogel",
+                "scope": "execute sign_nda once",
+                "nonce": "a1f3"
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "UNESTABLISHED",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "03-party-derived-from-approval",
+          "notes": "The implementation copies the approver into the party field. The approver did not acknowledge being the signatory; the UI asked 'allow this action?'.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "approval",
+                "acknowledged": false,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "04-agent-named-as-party",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "agent",
+                  "id": "agent://contracts-assistant/7",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "05-role-named-as-party",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "role",
+                  "id": "role://legal-oncall",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "06-organisation-without-natural-person",
+          "notes": "An organisation can be the contracting party; it cannot be the accountable human. The record must name the person who answers for the organisation's act.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "organisation",
+                  "id": "org://example-gmbh",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "07-identity-unresolvable",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "e.vogel",
+                  "resolvable": false
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "UNESTABLISHED",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "08-not-acknowledged",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": false,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "UNESTABLISHED",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "09-record-under-agent-control",
+          "notes": "The record is written by the agent runtime into a store the agent can write. It is not evidence of anything; the design is also a P2 finding.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "agent",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "UNESTABLISHED",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "10-record-not-bound-to-action",
+          "notes": "The acknowledgement was given against different canonical parameters (a different counterparty). Cf. AISVS 9.2.8.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": false,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "11-nonce-reused",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": false
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "12-record-for-a-different-action",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_msa",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "UNESTABLISHED",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "13-contradictory-records",
+          "notes": "One record names the human, another names the agent. Contradictory evidence is not evidence; the positive violation governs.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              },
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "agent",
+                  "id": "agent://contracts-assistant/7",
+                  "resolvable": true
+                },
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "14-capacity-missing",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "UNESTABLISHED",
+            "gate": "block"
+          }
+        },
+        {
+          "name": "15-agent-executed-binding-step",
+          "notes": "Everything about the party is in order - natural person, acknowledged as signatory, bound, single-use - but the agent executed the signature. A human_only action is executed or released by the party; delegating it and auditing the delegation is the wrong architecture (theory, S3.2.2). Positive evidence, so FAIL.",
+          "input": {
+            "obligation_records": [
+              {
+                "for_action": "sign_nda",
+                "record_control": "external",
+                "party": {
+                  "type": "natural_person",
+                  "id": "idp://example.org/users/e.vogel",
+                  "resolvable": true
+                },
+                "on_behalf_of": "Example GmbH",
+                "capacity": "signatory",
+                "basis": "acknowledged_as_party",
+                "acknowledged": true,
+                "bound_to_action": true,
+                "nonce_single_use": true,
+                "performer": {
+                  "kind": "agent",
+                  "id": "agent://contracts-assistant/7"
+                }
+              }
+            ]
+          },
+          "expect": {
+            "accountability_result": "FAIL",
+            "gate": "block"
+          }
+        }
+      ],
+      "failure_condition": "Any case whose gate outcome or accountability result differs from the expectation. Case 01 is the only one that proceeds, and it proceeds for the party, not for the agent."
+    },
+    {
+      "id": "P7-15-kappa-human-owns-needs-no-obligation-record",
+      "title": "HUMAN_OWNS under kappa (a production release) is ownership of the call, not party to an obligation",
+      "properties": [
+        "ALPHA-P7",
+        "ALPHA-P6"
+      ],
+      "provenance": "Mayur021/aisvs-c9-action-class-conformance, scenario production_external_release",
+      "input": {
+        "kind": "action",
+        "action": {
+          "id": "publish_production_release",
+          "declared_effect": "non_recoverable",
+          "consequence": "CRITICAL",
+          "alpha": {
+            "value": "delegable",
+            "source": {
+              "kind": "registry",
+              "control": "external",
+              "id": "reg://tools/publish_release@6"
+            }
+          }
+        }
+      },
+      "expect": {
+        "alpha_effective": "delegable",
+        "oversight_alpha": "UNATTENDED",
+        "required_oversight": "HUMAN_OWNS",
+        "accountability_required": false,
+        "gate": "proceed"
+      },
+      "failure_condition": "Demanding an obligation record here, or reporting accountability as required. The named human who owns this call under kappa is answerable for a decision, not party to a commitment the action creates; the record must keep the two apart."
+    }
+  ]
+}
