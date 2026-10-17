@@ -1,0 +1,9 @@
+The Accountability Axis (alpha) for Agent Actions: a verifiable form
+Copyright 2026 K. Lunina (ORCID 0009-0000-5586-738X)
+
+Licensed under the Apache License, Version 2.0.
+
+The kappa-side vocabulary and ladder reproduced in verifier/alpha_verify.py
+for self-contained vectors follow the public reference model
+"aisvs-c9-action-class-conformance" by Mayur Agnihotri, v1.2.0, Apache-2.0,
+https://github.com/Mayur021/aisvs-c9-action-class-conformance
